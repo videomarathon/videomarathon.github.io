@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="">
+  <meta name="keywords" content="Long Video-Language Understanding, Video Instruction-following Dataset">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VideoMarathon: Unleashing Hour-Scale Video Training for Long Video-Language Understanding</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/icon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title is-bold">
+            <img src="./static/images/icon.png" style="width:1.2em;vertical-align: middle" alt="Logo">
+            <span style="vertical-align: middle">VideoMarathon</span>
+          </h1>
+          <h2 class="subtitle is-3 publication-subtitle">
+            Unleashing Hour-Scale Video Training for <br> Long Video-Language Understanding
+          </h2>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><a href="https://jylin.me">Jingyang Lin</a><sup>1,2</sup>,</span>
+            <span class="author-block"><a href="https://jialianwu.com/">Jialian Wu</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://cs-people.bu.edu/sunxm/">Ximeng Sun</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://zewang95.github.io/">Ze Wang</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://joellliu.github.io/">Jiang Liu</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://yushengsu-thu.github.io/">Yusheng Su</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://www.xiaodongyu.me/">Xiaodong Yu</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://hhhhhhao.github.io/">Hao Chen</a><sup>1</sup>,</span><br>
+            <span class="author-block"><a href="https://www.cs.rochester.edu/u/jluo/">Jiebo Luo</a><sup>2</sup>,</span>
+            <span class="author-block"><a href="https://zicliu.wixsite.com/mysite">Zicheng Liu</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://scholar.google.com/citations?user=bX1YILcAAAAJ&hl=en">Emad Barsoum</a><sup>1</sup></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><b style="color:#000000; font-weight:normal">▶ </b><sup>1</sup>AMD</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="author-block"><b style="color:#004a82; font-weight:normal">▶ </b><sup>2</sup>University of Rochester</span>
+          </div>
+
+          <div class="publication-links">
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/xxxx.xxxxx" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="ai ai-arxiv"></i>
+                </span>
+                <span>arXiv</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://huggingface.co/datasets/jylins/videomarathon" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <p style="font-size:18px">🤗</p>
+                </span>
+                <span>Dataset</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://github.com/jylins/hourllava" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <svg class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg><!-- <i class="fab fa-github"></i> Font Awesome fontawesome.com -->
+                </span>
+                <span>GitHub</span>
+              </a>
+            </span>
+            </span>
+            <span class="link-block">
+              <a href="https://huggingface.co/datasets/jylins/videomarathon" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <p style="font-size:18px">🤗</p>
+                </span>
+                <span>Checkpoint</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Recent long-form video-language understanding benchmarks have driven progress in video large multimodal models (Video-LMMs).
+            However, the scarcity of well-annotated long videos has left the training of hour-long Video-LLMs underexplored.<br><br>
+            To close this gap, we present <span style="font-weight: 800;">VideoMarathon</span>, a large-scale hour-long video instruction-following dataset.
+            This dataset includes around <span style="font-weight: 800;">9,700 hours</span> of long videos sourced from diverse domains, ranging from <span style="font-weight: 800;">3 to 60 minutes</span> per video.
+            Specifically, it contains <span style="font-weight: 800;">3.3M high-quality QA pairs</span>, spanning six fundamental topics: temporality, spatiality, object, action, scene, and event.
+            Compared to existing video instruction datasets, VideoMarathon significantly extends training video durations up to 1 hour, and supports <span style="font-weight: 800;">22 diverse tasks</span> requiring both short- and long-term video comprehension.<br><br>
+            Building on VideoMarathon, we propose <span style="font-weight: 800;">Hour-LLaVA</span>, a powerful and efficient Video-LMM for hour-scale video-language modeling. 
+            It enables hour-long video training and inference at <span style="font-weight: 800;">1-FPS sampling</span> by leveraging a memory augmentation module, which adaptively integrates user question-relevant and spatiotemporal-informative semantics from a cached full video context.
+            In our experiments, Hour-LLaVA achieves the best performance on multiple long video-language benchmarks, demonstrating high quality of VideoMarathon dataset and superiority of Hour-LLaVA model.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Dataset. -->
+    <div class="columns is-centered">
+      <div class="column is-six-sevenths">
+        <h2 class="title is-3">VideoMarathon: A Long Video Instruction-following Dataset</h2>
+        <div class="content has-text-justified">
+          <p>
+            VideoMarathon is a long video instruction-following dataset with a total duration of around <span style="font-weight: 800;">9,700 hours</span>, consisting of <span style="font-weight: 800;">3.3M</span> QA pairs across <span style="font-weight: 800;">22 tasks</span>. The task taxonomy and the statistics of the VideoMarathon are shown as follows:
+          </p>
+          
+          <img src="./static/images/task_taxonomy.png" class="interpolation-image" alt="Interpolate start reference image."/><br>
+          <div class="caption">(a) Task Taxonomy of VideoMarathon.</div>
+          <div class="image-row">
+            <div class="image-block">
+              <img src="./static/images/data_source.png" alt="(b) Data Source" />
+              <div class="caption">(b) Data Source</div>
+            </div>
+
+            <div class="image-block" style="width: 27.3%;">
+              <img src="./static/images/question_types.png" alt="(c) Question Types" />
+              <div class="caption">(c) Question Types</div>
+            </div>
+
+            <div class="image-block" style="width: 25.6%;">
+              <img src="./static/images/video_durations.png" alt="(d) Video Duration" />
+              <div class="caption">(d) Video Duration</div>
+            </div>
+
+            <div class="image-block" style="width: 25.6%;">
+              <img src="./static/images/event_count.png" alt="(e) Event Counting" />
+              <div class="caption">(e) Event Counting</div>
+            </div>
+          </div>
+
+          <p style="caption-side: bottom; text-align: left; font-size: 0.9em;">
+              <span style="font-weight: 800;">Figure 1: VideoMarathon: A diverse <i>long video</i> instruction-following dataset.</span> (a) The dataset contains 22 diverse tasks, covering both <i>short-form</i> (yellow tag) and <i>long-form</i> (red tag) comprehension. (b) The dataset spans diverse video source domains. (c) The dataset features a wide range of question types for long-form video-language modeling.  (d) The dataset consists of long videos ranging from three minutes to one hour. (e) The dataset includes complex video content reflected by the number of events per video.
+          </p>
+
+          <br>
+          
+          <p>
+            In Table 1, the comparison between our VideoMarathon and other existing video instruction-following datasets shows that <i>VideoMarathon features a significantly longer average video length, broader duration range, and a larger number of QA pairs</i>.
+          </p>
+
+          <div class="table-container" style="overflow-x:auto;">
+            <table style="width:100%; border-collapse: collapse; font-size: 0.9em">
+            <caption style="caption-side: top; text-align: left; padding-bottom: 8px;">
+              <span style="font-weight: 800;">Table 1: Comparison between VideoMarathon and other existing video instruction-following datasets.</span> OE and MC denote open-ended and multiple-choice, respectively.
+            </caption>
+
+            <thead>
+              <tr>
+                <th style="border: 1px solid #000; padding: 8px; text-align: left; background-color: #dddddd;">Dataset</th>
+                <th style="border: 1px solid #000; padding: 8px; text-align: left; background-color: #dddddd;">Captioner</th>
+                <th style="border: 1px solid #000; padding: 8px; text-align: left; background-color: #dddddd;">Summarizer</th>
+                <th style="border: 1px solid #000; padding: 8px; text-align: center; background-color: #dddddd;">Total Video Time</th>
+                <th style="border: 1px solid #000; padding: 8px; text-align: center; background-color: #dddddd;">Average Video Length</th>
+                <th style="border: 1px solid #000; padding: 8px; text-align: center; background-color: #dddddd;">Duration Range</th>
+                <th style="border: 1px solid #000; padding: 8px; text-align: center; background-color: #dddddd;">#OE QA</th>
+                <th style="border: 1px solid #000; padding: 8px; text-align: center; background-color: #dddddd;">#MC QA</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td style="border: 1px solid #000; padding: 8px;">LLaVA-Hound</td>
+                <td style="border: 1px solid #000; padding: 8px;">GPT-4V</td>
+                <td style="border: 1px solid #000; padding: 8px;">GPT-4</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">3K hrs</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">0.2 mins</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">0–8 mins</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">900K</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">0</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #000; padding: 8px;">ShareGPT4Video</td>
+                <td style="border: 1px solid #000; padding: 8px;">GPT-4V</td>
+                <td style="border: 1px solid #000; padding: 8px;">GPT-4</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">0.2K hrs</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">0.3 mins</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">&lt; 2 mins</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">0</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">0</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #000; padding: 8px;">LLaVA-Video-178K</td>
+                <td style="border: 1px solid #000; padding: 8px;">GPT-4o</td>
+                <td style="border: 1px solid #000; padding: 8px;">GPT-4o</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">2K hrs</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">0.6 mins</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">&lt; 3 mins</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">960K</td>
+                <td style="border: 1px solid #000; padding: 8px; text-align: center;">196K</td>
+              </tr>
+
+              <tr style="background-color: #ffe6cc;">
+                <td style="border: 1px solid #000; padding: 8px; font-weight: bold;">VideoMarathon</td>
+                <td style="border: 1px solid #000; padding: 8px; font-weight: bold;">Qwen2VL-7B</td>
+                <td style="border: 1px solid #000; padding: 8px; font-weight: bold;">DeepSeek-V3</td>
+                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center;">9.7K hrs</td>
+                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center;">20.9 mins</td>
+                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center;">3–60 mins</td>
+                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center;">1.73M</td>
+                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center;">1.57M</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <!--/ Dataset. -->
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Methodology. -->
+    <div class="columns is-centered">
+      <div class="column is-six-sevenths">
+        <h2 class="title is-3">Hour-LLaVA: An Efficient Hour-scale Video-LMM</h2>
+        <div class="content has-text-justified">
+          <p>
+            Powered by memory augmentation, we propose Hour-LLaVA, an efficient video-language model capable of modeling hour-long videos at 1 FPS.
+            It comprises three key modules: a video encoder, a memory augmentation module (<i>i.e.</i>, MemAug), and an LLM decoder.
+            Figure 2 shows the Hour-LLaVA framework, with the video encoder omitted for simplicity.
+          </p>
+        </div>
+        <div class="column has-text-centered">
+          <img src="./static/images/hour_llava.png"
+               class="interpolation-image"
+               alt="Interpolate start reference image."/>
+          <p style="caption-side: bottom; text-align: left; font-size: 0.9em;">
+            <span style="font-weight: 800;">Figure 2: Overview of the Hour-LLaVA Framework.</span>
+            Input video features \( \mathbf{H}_\text{v} \) encoded from 1-FPS sampled frames are selectively decayed spatially and temporally through a forgetting mechanism, producing decayed video tokens \( \tilde{\mathbf{H}}_\text{v} \) for efficient video modeling.
+            Meanwhile, full video features \( \mathbf{H}_\text{v} \) are stored in a memory repository.
+            Given the decayed tokens \( \tilde{\mathbf{H}}_\text{v} \) and a user question tokens \( \mathbf{H}_\text{q}\), the MemAug module enhances them with full video context and user question-relevant details from the memory repository, obtaining memory-augmented video tokens \( \hat{\mathbf{H}}_\text{v} \).
+            These augmented tokens are then passed with the original user question tokens \( \mathbf{H}_\text{q} \) into the LLM decoder to generate the final response \( \mathbf{X}_\text{a} \).
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Methodology. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Methodology. -->
+    <div class="columns is-centered">
+      <div class="column is-six-sevenths">
+        <h2 class="title is-3">Performance</h2>
+        <div class="content has-text-justified">
+          <p>
+            We evaluate our models on four mainstream video-language benchmarks: TempCompass, LongVideoBench, Video-MME, and LVBench.
+            As shown in Table 2, Hour-LLaVA consistently achieves the best performance on these four benchmarks in both the 3B and 7-8B model size categories.
+          </p>
+        </div>
+        <table border="1" style="width:100%; border-collapse: collapse; font-size: 0.9em">
+          <caption style="caption-side: top; text-align: left; padding-bottom: 8px;">
+            <span style="font-weight: 800;">Table 2: Performance comparison of existing LMMs</span> on TempCompass, LongVideoBench, VideoMME, and LVBench datasets. M-Avg denotes the average performance of multiple-choice tasks.
+            <span style="background-color: #b3d1ff; display: inline-block; padding: 0px 2px 0px 2px; border-radius: 2px;">Blue</span> boxes denote the average durations of benchmarks. <span style="background-color: #b3d1ff; display: inline-block; padding: 0px 2px 0px 2px; border-radius: 2px; color: #ff0000; font-weight: bold;">Red</span> highlights that LVBench's average video length exceeds the maximum length in the training stage. The symbol <sup>†</sup> marks our reimplemented results.  <strong>Bold</strong> font denotes the best performance among models at the same scale, while <u>underline</u> indicates the second-best.
+          </caption>
+          <thead>
+            <tr>
+              <th rowspan="2" style="border: 1px solid #000; padding: 0px 8px 0px 8px; padding-top: 20px; text-align: left; background-color: #dddddd;">Method</th>
+              <th rowspan="2" style="border: 1px solid #000; padding: 0px 8px 0px 8px; padding-top: 12px; text-align: left; background-color: #dddddd;">LLM<br/>Params</th>
+              <th rowspan="2" style="border: 1px solid #000; padding: 0px 8px 0px 8px; padding-top: 12px; text-align: left; background-color: #dddddd;">Input<br/>Video</th>
+              <th colspan="1" style="border: 1px solid #000; padding: 0px 8px 0px 8px; text-align: center; background-color: #dddddd;">TempCompass</th>
+              <th colspan="1" style="border: 1px solid #000; padding: 0px 8px 0px 8px; text-align: center; background-color: #dddddd;">LongVideoBench</th>
+              <th colspan="3" style="border: 1px solid #000; padding: 0px 8px 0px 8px; text-align: center; background-color: #dddddd;">VideoMME (w/o &amp; w/ subtitles)</th>
+              <th rowspan="1" style="border: 1px solid #000; padding: 0px 8px 0px 8px; text-align: center; background-color: #dddddd;">LVBench</th>
+            </tr>
+            <tr>
+              <th style="border: 1px solid #000; padding: 0px 8px 0px 8px; text-align: center; background-color: #dddddd;">
+                M-Avg<br/>
+                <span style="background-color: #b3d1ff; display: inline-block; padding: 2px 6px; border-radius: 2px;">
+                  11s
+                </span>
+              </th>
+              <th style="border: 1px solid #000; padding: 0px 8px 0px 8px; text-align: center; background-color: #dddddd;">
+                M-Avg<br/>
+                <span style="background-color: #b3d1ff; display: inline-block; padding: 2px 6px; border-radius: 2px;">
+                  459s
+                </span>
+              </th>
+              <th style="border: 1px solid #000; padding: 0px 8px 0px 8px; text-align: center; background-color: #dddddd;">
+                Overall<br/>
+                <span style="background-color: #b3d1ff; display: inline-block; padding: 2px 6px; border-radius: 2px;">
+                  1021s
+                </span>
+              </th>
+              <th style="border: 1px solid #000; padding: 0px 8px 0px 8px; text-align: center; background-color: #dddddd;">
+                Medium<br/>
+                <span style="background-color: #b3d1ff; display: inline-block; padding: 2px 6px; border-radius: 2px;">
+                  516s
+                </span>
+              </th>
+              <th style="border: 1px solid #000; padding: 0px 8px 0px 8px; text-align: center; background-color: #dddddd;">
+                Long<br/>
+                <span style="background-color: #b3d1ff; display: inline-block; padding: 2px 6px; border-radius: 2px;">
+                  2466s
+                </span>
+              </th>
+              <th style="border: 1px solid #000; padding: 0px 8px 0px 8px; text-align: center; background-color: #dddddd;">
+                Avg<br/>
+                <span style="background-color: #b3d1ff; display: inline-block; padding: 2px 6px; border-radius: 2px; color: #ff0000; font-weight: bold;">
+                  4037s
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Proprietary LMM Section Header -->
+            <tr>
+              <td colspan="9" style="background-color: #f0f0f0; font-weight: bold; text-align: left; padding: 0px 8px 0px 8px;">
+                Proprietary LMM
+              </td>
+            </tr>
+            <!-- Proprietary LMM Rows -->
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">GPT-4V</td>
+              <td style="text-align: left; padding: 0px 8px 0px 8px; color: #cccccc">–</td>
+              <td style="text-align: left; padding: 0px 8px 0px 8px; color: #cccccc">10 frames</td>
+              <td style="text-align: center; padding: 0px 8px 0px 8px; color: #cccccc">–</td>
+              <td style="text-align: center; padding: 0px 8px 0px 8px; color: #cccccc">61.3</td>
+              <td style="text-align: center; padding: 0px 8px 0px 8px; color: #cccccc">59.9/63.3</td>
+              <td style="text-align: center; padding: 0px 8px 0px 8px; color: #cccccc">55.8/59.7</td>
+              <td style="text-align: center; padding: 0px 8px 0px 8px; color: #cccccc">53.5/56.9</td>
+              <td style="text-align: center; padding: 0px 8px 0px 8px; color: #cccccc">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">GPT-4o</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left; color: #cccccc">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left; color: #cccccc">384 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">70.9</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">66.7</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">71.9/77.2</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">70.3/76.6</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">65.3/72.1</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">48.9</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">Gemini 1.5 Flash</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left; color: #cccccc">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left; color: #cccccc">0.5/1 fps</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">61.6</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">70.3/75.0</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">68.8/74.7</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">61.1/68.8</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">Gemini 1.5 Pro</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left; color: #cccccc">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left; color: #cccccc">0.5/1 fps</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">69.3</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">64.0</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">75.0/81.3</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">74.3/81.0</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">67.4/77.4</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center; color: #cccccc">33.1</td>
+            </tr>
+
+            <!-- Open-source LMM (<7B) Section Header -->
+            <tr>
+              <td colspan="9" style="background-color: #f0f0f0; font-weight: bold; text-align: left; padding: 0px 8px 0px 8px;">
+                Open-source LMM (&lt;7B)
+              </td>
+            </tr>
+            <!-- Open-source LMM (<7B) Rows -->
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">ViLMA-1.5-3B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">3B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">8 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">56.1</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">42.9</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">42.2/44.2</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">Phi-3.5-Vision-4.2B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">4.2B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">16 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">50.8/–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">LongVU-3.2B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">3.2B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">1 fps</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–/51.5</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">-/47.2</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">InternVL2.5-2B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">2B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">64 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">53.4</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">46.0</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">51.9/54.1</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">Apollo-1.5B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">1.5B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">2 fps</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">60.8</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">54.1</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">53.0/54.6</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">Apollo-3B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">3B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">2 fps</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">62.5</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">55.1</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">58.4/60.6</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">LLaVA-Video-3B<sup>†</sup></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">3B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">64 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>63.4</u></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>55.2</u></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>58.7</u>/<u>60.7</u></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>55.2</u>/<u>57.3</u></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>47.0</u>/<u>49.9</u></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>41.7</u></td>
+            </tr>
+            <tr>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px;">Hour-LLaVA-3B (<i>ours</i>)</td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: left;">3B</td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: left;">1 fps</td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center;"><strong>63.6</strong></td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center"><strong>57.8</strong></td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center"><strong>60.6/66.7</strong></td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center"><strong>59.0/65.4</strong></td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center"><strong>52.1/60.4</strong></td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center"><strong>44.7</strong></td>
+            </tr>
+
+            <!-- Open-source LMM (7-8B) Section Header -->
+            <tr>
+              <td colspan="9" style="background-color: #f0f0f0; font-weight: bold; text-align: left; padding: 0px 8px 0px 8px;">
+                Open-source LMM (7-8B)
+              </td>
+            </tr>
+            <!-- Open-source LMM (7-8B) Rows -->
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">Video-LLaVA</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">8 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">37.9</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">39.1</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">39.9/41.6</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">38.0/40.7</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">36.2/38.1</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">VideoChat2</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">16 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">51.1</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">39.3</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">39.5/43.8</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">37.0/39.4</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">33.2/39.2</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">ShareGPT4Video</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">8B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">16 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">59.4</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">41.8</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">39.9/43.6</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">36.3/39.3</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">35.0/37.9</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">VideoLLaMA2</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">16 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">51.4</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">47.9/50.3</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">37.0/39.4</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">33.2/39.2</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">Video-XL</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">1 fps</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">50.7</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">55.5/61.0</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">Kangaroo</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">8B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">64 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">62.5</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">54.8</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">56.0/57.6</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">55.3/55.4</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">46.7/49.3</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">39.4</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">LongVA</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">128 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">52.6/54.3</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">50.4/53.6</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">46.2/47.6</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">LongVILA</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">256 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">60.1/65.1</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">58.3/64.9</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">53.0/57.4</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">LongVU</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">1 fps</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–/60.9</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">-/<u>59.5</u></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">Apollo-7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">2 fps</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>64.9</u></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>58.5</u></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">61.3/63.3</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">–</td>
+            </tr>
+            <tr>
+              <td style="padding: 0px 8px 0px 8px;">LLaVA-Video-7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">7B</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: left;">64 frames</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">64.3<sup>†</sup></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;">58.2</td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>63.3</u>/<u>69.7</u></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>58.9</u>/<u>62.9</u><sup>†</sup></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>53.0</u>/55.0<sup>†</sup></td>
+              <td style="padding: 0px 8px 0px 8px; text-align: center;"><u>42.2</u><sup>†</sup></td>
+            </tr>
+            <tr>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px;">Hour-LLaVA-7B (<i>ours</i>)</td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: left;">7B</td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: left;">1 fps</td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center;"><strong>68.1</strong></td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center;"><strong>60.4</strong></td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center;"><strong>63.6/70.2</strong></td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center;"><strong>63.8/70.0</strong></td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center;"><strong>55.0/65.1</strong></td>
+              <td style="background-color: #ffe6cc; padding: 0px 8px 0px 8px; text-align: center;"><strong>45.6</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+    <!--/ Performance. -->
+  </div>
+</section>
+
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Citation</h2>
+    <pre><code>@article{lin2025videomarathon,
+  author    = {Lin, Jingyang and Wu, Jialian and Sun, Ximeng and Wang, Ze and Liu, Jiang and Chen, Hao and Luo, Jiebo and Liu, Zicheng and Barsoum, Emad},
+  title     = {Unleashing Hour-Scale Video Training for Long Video-Language Understanding},
+  journal   = {arXiv preprint arXiv:xxxx.xxxxx},
+  year      = {2025},
+}</code></pre>
+  </div>
+</section> -->
+
+
+<footer class="footer">
+  <div class="container">
+    <!-- <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <!-- <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
